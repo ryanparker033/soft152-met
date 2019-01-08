@@ -1,0 +1,280 @@
+public partial class Year_Observation : Form
+    {
+        public static Year_Observation frmkeepyear = null;
+        public Year_Observation()
+        {
+            InitializeComponent();
+            frmkeepyear = this;
+        }
+
+        private void lbl_Nummonths_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_main_Click(object sender, EventArgs e)
+        {
+            frmkeepyear.Close();
+            Form1.frmkeepobservations.Show();
+        }
+        
+        public partial class New_Observation : Form
+    {
+        DataTable Observations = new DataTable();
+        public static New_Observation frmObservation = null;
+        public New_Observation()
+        {
+            InitializeComponent();
+            frmObservation = this;
+
+        }
+
+        private void New_Observation_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_main_Click(object sender, EventArgs e)
+        {
+            frmObservation.Close();
+            Form1.frmkeepobservations.Show();
+        }
+
+        private void btn_Save_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void dta_Observations_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+    }
+    
+    public partial class Form1 : Form
+    {
+        public static Form1 frmkeepobservations = null;
+        public Form1()
+        {
+            InitializeComponent();
+            frmkeepobservations = this;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+        public void readData()
+
+        {
+            string filename, inyeardescription, inlocationname, inlocationcounty, inlocationpostcode;
+            int inyearID, inmonths, inlocationstreetnum, inlocationlongitude, inlocationlatitude;
+            int inmonthID, inmaximumtemp, inminimumtemp, inairfrost, inmillimetersrain, inhourssunshine;
+            int monthArraySize;
+
+
+
+            ofd_Observations.ShowDialog();
+            filename = ofd_Observations.FileName;
+
+            StreamReader input = new StreamReader(filename);
+            //reading in the location 
+            inlocationname = input.ReadLine();
+            inlocationstreetnum = Convert.ToInt32(input.ReadLine());
+            inlocationcounty = input.ReadLine();
+            inlocationpostcode = input.ReadLine();
+            inlocationlatitude = Convert.ToInt32(input.ReadLine());
+            inlocationlongitude = Convert.ToInt32(input.ReadLine());
+            int numberofyears = Convert.ToInt32(input.ReadLine());
+            Years[] tempmontharray = new Years[numberofyears];
+            int i = 0;
+            while (!input.EndOfStream)//loop over all years
+            {
+                inyearID = Convert.ToInt32(input.ReadLine());
+                inyeardescription = input.ReadLine();
+                                
+                for (int j = 0; j < 12; j++)//loop over 12 months
+                {
+                    //collect all data about one month
+                    inmonthID = Convert.ToInt32(input.ReadLine());
+                    inmaximumtemp = Convert.ToInt32(input.ReadLine());
+                    inminimumtemp = Convert.ToInt32(input.ReadLine());
+                    inairfrost = Convert.ToInt32(input.ReadLine());
+                    inmillimetersrain = Convert.ToInt32(input.ReadLine());
+                    inhourssunshine = Convert.ToInt32(input.ReadLine());
+
+                    //create temp month object
+                    Months tempMonths = new Months(4, 4, 4, 4, 4, 4);
+
+                    //add month to your months array
+                    Months[] temparray = new Months[12];
+                }
+                //crate year tmp object (using data of a year + month array)
+                Years[] observations = new Years[numberofyears];
+                //add year into Data.Year array...
+                new Years(inyearID, inyeardescription);
+
+                i = i + 1;
+            }
+            input.Close();
+        }
+        //growing the array for more observations
+        private void growarray(ref Years[] observations)
+        {
+            int arraysize;
+
+            if (observations == null)
+            {
+                arraysize = 0;
+            }
+            else
+                arraysize = observations.Length;
+            Array.Resize(ref observations, arraysize + 1);
+        }
+
+        private void btn_newObservation_Click(object sender, EventArgs e)
+        {
+            New_Observation tempNewObservation = new New_Observation();
+            tempNewObservation.Show();
+            frmkeepobservations.Hide();
+        }
+
+        private void btn_year_Click(object sender, EventArgs e)
+        {
+            Year_Observation tempNewYearObservation = new Year_Observation();
+            tempNewYearObservation.Show();
+            frmkeepobservations.Hide();
+        }
+    }
+    
+    class Months
+    {
+        //Varibles 
+        private int monthID;
+        private int maximumtemp;
+        private int mimimumtemp;
+        private int airfrost;
+        private int millimetersrain;
+        private int hourssunshine;
+        //constructor 
+        public Months(int themonthID, int themaximumtemp, int themimimumtemp,
+                      int theairfrost, int themillmetersofrain,
+                      int thehoursofsunshine)
+        {
+            monthID = themonthID;
+            maximumtemp = themaximumtemp;
+            mimimumtemp = themimimumtemp;
+            airfrost = theairfrost;
+            millimetersrain = themillmetersofrain;
+            hourssunshine = thehoursofsunshine;
+        }
+        //Setters
+        public void setmonth(int inmonth)
+        {
+            monthID = inmonth;
+        }
+
+
+        public void setmaxtemp(int inmaxtemp)
+        {
+            maximumtemp = inmaxtemp;
+        }
+
+        public void setmintemp(int inmintemp)
+        {
+            mimimumtemp = inmintemp;
+        }
+
+        public void numofdayairfrost(int inairfrost)
+        {
+            airfrost = inairfrost;
+        }
+        public void millimetersofrain(int inmillimetersofrain)
+        {
+            millimetersrain = inmillimetersofrain;
+        }
+        public void hoursofsunshine(int inhoursofsunshine)
+        {
+            hourssunshine = inhoursofsunshine;
+        }
+
+        //getters
+
+        public string getmonth()
+        {
+            return monthID.ToString();
+        }
+
+        public string getmaxtemp()
+        {
+            return maximumtemp.ToString();
+        }
+
+        public string getmaxtemperture()
+        {
+            return maximumtemp.ToString();
+        }
+
+        public string getmintemp()
+        {
+            return mimimumtemp.ToString();
+        }
+
+        public string getairfrost()
+        {
+            return airfrost.ToString();
+        }
+
+        public string getmillimetersofrain()
+        {
+            return millimetersrain.ToString();
+        }
+
+        public string gethoursofsunshine()
+        {
+            return hourssunshine.ToString();
+        }
+    }
+    
+    class Years
+    {
+        //varibles for the year class
+        private int yearID;
+        private string yeardescription;
+        private int allmonths;
+        Years[] months;
+
+        //two constuctors for the year class
+        public Years(int theyearID, string theyeardescripion, int theallmonths)
+        {
+            yearID = theyearID;
+            yeardescription = theyeardescripion;
+            allmonths = theallmonths;
+            months = null;
+        }
+
+        public Years(int theyearID, string theyearsecription, int theallmonths, Years[] themonths)
+        {
+            yearID = theyearID;
+            yeardescription = theyearsecription;
+            allmonths = theallmonths;
+            months = themonths;
+        }
+        //get the details for each of the years
+        //public string getDetails()
+        //{
+        //   // string output;
+        //   // output = String.Format("Year is {0} which was {1} and had {2}",
+        //             //yearID, yeardescription, months.Length);
+        //   // return output;
+        //}
+    //getter
+    public Years[] getallmonths()
+    {
+        return months;
+    }
+    //setter
+    public void setallmonths(Years[] themonths)
+    {
+        months = themonths;
+    }
